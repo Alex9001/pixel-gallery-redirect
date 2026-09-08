@@ -29,7 +29,7 @@
 
 ## Put the thumbnail back to work
 
-You take a photo in Pixel Camera, tap the thumbnail, and get **“Photos required”**
+You take a photo in Pixel Camera, tap the thumbnail, and get **“Google Photos Required”**
 instead of your gallery. Pixel Gallery Redirect is a small, open-source bridge
 that receives that request and sends it to GrapheneOS’s built-in Gallery.
 
@@ -136,7 +136,7 @@ This is an independent project, not affiliated with Google or GrapheneOS.
 | Symptom | Try this |
 |---|---|
 | Android refuses to install | Check for Google Photos or another app using the same package ID. A differently signed build also requires uninstalling the previous redirect first. |
-| “Photos required” still appears | Install the redirect in the same Android user profile as Pixel Camera, then close and reopen Camera. |
+| “Google Photos Required” still appears | Install the redirect in the same Android user profile as Pixel Camera, then close and reopen Camera. |
 | Gallery does not open | Enable GrapheneOS’s built-in Gallery. Other gallery apps are not selected automatically. |
 | A just-taken photo does not open | Wait for Pixel Camera to finish processing, then tap the thumbnail again. |
 | Asked to unlock | Unlock the device before opening the gallery. |
