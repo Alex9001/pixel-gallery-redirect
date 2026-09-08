@@ -1,0 +1,17 @@
+name: Bug report
+description: Report a camera-to-gallery issue.
+body:
+  - type: textarea
+    id: environment
+    attributes:
+      label: Device and app versions
+      description: Phone model, OS/Android version, Pixel Camera version, redirect version, and gallery app.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: What happened?
+      description: Steps, expected behavior, actual behavior, and whether the phone was locked or the photo was still processing. Please omit private photos and media URIs.
+    validations:
+      required: true
