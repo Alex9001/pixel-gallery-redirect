@@ -45,7 +45,11 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Run selection and routing tests on Android 10
+        env:
+          ANDROID_USER_HOME: ${{ runner.temp }}/redirect-android
+          ANDROID_AVD_HOME: ${{ runner.temp }}/redirect-android/avd
         run: |
+          mkdir -p "$ANDROID_AVD_HOME"
           sdkmanager "emulator" "system-images;android-29;default;x86_64"
           echo no | avdmanager create avd --force --name redirect-test --package "system-images;android-29;default;x86_64"
           python3 tests/emulator.py
