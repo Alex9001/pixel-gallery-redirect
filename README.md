@@ -106,12 +106,16 @@ sha256sum -c SHA256SUMS
 
 ## F-Droid updates
 
-Add the **CYBER FRACTURE F-Droid Repository** in the F-Droid client to receive
+Add the **CYBER FRACTURE** repository in the F-Droid client to receive
 this app and future CYBER FRACTURE Android apps:
 
 ```text
 https://alex9001.github.io/cyber-fracture-fdroid/fdroid/repo
 ```
+
+The [add-repository page](https://alex9001.github.io/cyber-fracture-fdroid/)
+has a scannable QR code and a copy button that includes the fingerprint. Refresh
+your repositories after adding it to load the **CYBER FRACTURE** display name.
 
 F-Droid will show the repository signing fingerprint before adding it. Trust it
 only if it is:
