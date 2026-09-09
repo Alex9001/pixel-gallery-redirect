@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.android.apps.photos"
-    android:versionCode="2" android:versionName="1.0.0">
+    android:versionCode="3" android:versionName="1.1.0">
     <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="36" />
     <queries>
-        <package android:name="com.android.gallery3d" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="content" android:mimeType="image/*" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="content" android:mimeType="video/*" />
+        </intent>
     </queries>
     <application android:label="Pixel Gallery Redirect"
         android:icon="@mipmap/ic_launcher"

@@ -1,0 +1,26 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.pixelgalleryredirect.tests">
+    <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="36" />
+    <instrumentation android:name="com.google.android.apps.photos.pager.GalleryTests" android:targetPackage="com.google.android.apps.photos" />
+    <application android:label="Redirect test fixture">
+        <activity android:name="android.app.Activity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity-alias android:name=".Photo" android:targetActivity="android.app.Activity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" android:mimeType="image/*" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:name=".Video" android:targetActivity="android.app.Activity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" android:mimeType="video/*" />
+            </intent-filter>
+        </activity-alias>
+    </application>
+</manifest>

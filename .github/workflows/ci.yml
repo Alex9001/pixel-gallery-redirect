@@ -9,7 +9,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -34,3 +34,17 @@ jobs:
           tools = pathlib.Path.home() / '.cache/pixel-gallery-android/tools/android-16'
           print(subprocess.check_output([str(tools / 'aapt2'), 'dump', 'permissions', 'pixel-gallery-redirect.apk'], text=True))
           PY
+      - name: Enable emulator acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Run selection and routing tests on Android 10
+        run: |
+          sdkmanager "emulator" "system-images;android-29;default;x86_64"
+          echo no | avdmanager create avd --force --name redirect-test --package "system-images;android-29;default;x86_64"
+          "$ANDROID_HOME/emulator/emulator" -avd redirect-test -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect > /tmp/redirect-emulator.log 2>&1 &
+          timeout 240 adb wait-for-device
+          timeout 240 bash -c 'until adb shell getprop sys.boot_completed | tr -d "\r" | grep -q 1; do sleep 2; done'
+          adb shell input keyevent 82
+          python3 tests/run.py --device
