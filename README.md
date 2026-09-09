@@ -56,6 +56,10 @@ that receives that request and sends it to the gallery you choose.
 
 ## Install
 
+<p align="center">
+  <img src="images/interface-screenshot.png" width="360" alt="Choose your gallery picker showing Ask every time and installed photo and video viewers">
+</p>
+
 **Want automatic update checks?** Add the [CYBER FRACTURE F-Droid repository](#f-droid-updates)
 to install the app and receive future updates through your F-Droid client.
 You can also download the APK directly:

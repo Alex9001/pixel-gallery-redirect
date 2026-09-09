@@ -48,8 +48,4 @@ jobs:
         run: |
           sdkmanager "emulator" "system-images;android-29;default;x86_64"
           echo no | avdmanager create avd --force --name redirect-test --package "system-images;android-29;default;x86_64"
-          "$ANDROID_HOME/emulator/emulator" -avd redirect-test -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect > /tmp/redirect-emulator.log 2>&1 &
-          timeout 240 adb wait-for-device
-          timeout 240 bash -c 'until adb shell getprop sys.boot_completed | tr -d "\r" | grep -q 1; do sleep 2; done'
-          adb shell input keyevent 82
-          python3 tests/run.py --device
+          python3 tests/emulator.py
