@@ -29,6 +29,14 @@
 
 ---
 
+<p align="center">
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.google.android.apps.photos%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FAlex9001%2Fpixel-gallery-redirect%22%2C%22author%22%3A%22Alex9001%22%2C%22name%22%3A%22Pixel%20Gallery%20Redirect%22%7D"><img src="https://img.shields.io/badge/Add%20to-Obtainium-1f6feb?style=for-the-badge" alt="Add to Obtainium"></a>
+</p>
+
+Track official GitHub releases with Obtainium using the button above. Review and
+confirm the app configuration in Obtainium. You can also paste
+`https://github.com/Alex9001/pixel-gallery-redirect` into its Add App screen.
+
 ## Put the thumbnail back to work
 
 You take a photo in Pixel Camera, tap the thumbnail, and get **“Google Photos Required”**
@@ -148,6 +156,21 @@ B3:91:05:30:73:F0:F9:05:59:4C:91:4D:4A:63:C9:D1:CD:B6:73:F0:0D:DE:EE:A5:7C:F7:CF
 The repository is independently hosted rather than in F-Droid's main catalogue
 because this app uses the Google Photos package ID required by Pixel Camera.
 
+## Permissions and access
+
+**Declared Android permissions: none.** The app does not request runtime permissions.
+
+| Access | What the app uses |
+|---|---|
+| Camera, microphone, location, contacts | No permissions requested |
+| Internet | No `INTERNET` permission; updates are handled by F-Droid or Obtainium |
+| Photo library and storage | No storage or `READ_MEDIA_*` permissions |
+| Preview media | Temporary read access to the URI supplied by Camera, forwarded to the selected viewer with `FLAG_GRANT_READ_URI_PERMISSION` |
+| Installed viewers | Scoped package-visibility queries for image/video viewing intents; no `QUERY_ALL_PACKAGES` permission |
+
+The gallery preference is stored in private app storage. Media URIs are not saved
+there. CI checks both the source manifest and packaged APK for declared permissions.
+
 ## How it works
 
 ```mermaid
@@ -254,6 +277,38 @@ Self-built APKs use your key and cannot update the official release in place.
 CI builds and verifies the app with a temporary key. Public release APKs are
 signed separately with the maintainer’s retained key; that key is not stored in
 the repository or CI.
+
+## Reproducible builds
+
+The build supports **byte-for-byte reproducible unsigned APKs** with the same
+source and toolchain. ZIP entry order, timestamps, permissions, and storage method
+are fixed. CI builds in two different paths with different input timestamps and
+timezones and compares SHA-256 hashes.
+
+```sh
+python3 setup-sdk.py
+python3 build.py --unsigned
+cd build
+sha256sum -c UNSIGNED-SHA256SUMS
+```
+
+The output is `build/pixel-gallery-redirect-unsigned.apk`; this mode does not read
+or create signing keys. `build/BUILD-INFO.json` records the compiler/Python versions,
+SDK tool hashes, and unsigned APK hash. Use the same JDK version and the pinned
+SDK components from `setup-sdk.py` when comparing builds.
+
+Run the independent-build comparison from the repository root:
+
+```sh
+python3 tests/reproducible.py
+```
+
+Unsigned APKs cannot be installed. `python3 build.py` additionally signs the APK
+with your local key. A separately signed APK has a different checksum; compare
+unsigned hashes, not signed APK hashes from different keys. See
+[release preparation](RELEASE.md) for publishing the unsigned checksum and build
+information with future releases. This support applies to builds made with this
+updated script; it does not retroactively make the existing v1.1.0 release reproducible.
 
 ## Tests and releases
 

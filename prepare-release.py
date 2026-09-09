@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Verify and stage official release assets without publishing or changing Git."""
 import hashlib
+import json
 import os
 from pathlib import Path
 import shutil
@@ -36,6 +37,15 @@ with zipfile.ZipFile(APK) as apk:
 folder = ROOT / 'build/release/v1.1.0'
 folder.mkdir(parents=True, exist_ok=True)
 shutil.copyfile(APK, folder / APK.name)
+unsigned = ROOT / 'build/pixel-gallery-redirect-unsigned.apk'
+info_path = ROOT / 'build/BUILD-INFO.json'
+info = json.loads(info_path.read_text())
+assert hashlib.sha256(unsigned.read_bytes()).hexdigest() == info['unsignedApkSha256']
+with zipfile.ZipFile(unsigned) as rebuilt, zipfile.ZipFile(APK) as signed:
+    payload = {name: signed.read(name) for name in signed.namelist() if not name.startswith('META-INF/')}
+    assert payload == {name: rebuilt.read(name) for name in rebuilt.namelist()}, 'Unsigned payload does not match signed APK'
+for name in ('BUILD-INFO.json', 'UNSIGNED-SHA256SUMS'):
+    shutil.copyfile(ROOT / 'build' / name, folder / name)
 (folder / 'SHA256SUMS').write_text(hashlib.sha256(APK.read_bytes()).hexdigest() + '  ' + APK.name + '\n')
 (folder / 'SIGNING-CERTIFICATE.txt').write_text('Pixel Gallery Redirect — official release signing certificate\n\nSHA-256: ' + CERT + '\n\nVerify with Android SDK build-tools:\n  apksigner verify --print-certs pixel-gallery-redirect.apk\n\nThis is the certificate fingerprint, not the APK file checksum.\nThe private key is retained locally and is not published.\n')
 (folder / 'RELEASE-NOTES.md').write_text('''Choose your preferred gallery once; future Pixel Camera previews open it directly.

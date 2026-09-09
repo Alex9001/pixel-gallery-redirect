@@ -23,6 +23,8 @@ jobs:
         run: python3 setup-sdk.py
       - name: Build, sign, and verify APK
         run: python3 build.py
+      - name: Verify reproducible unsigned APK builds
+        run: python3 tests/reproducible.py
       - name: Verify permission-free manifest and packaged icon
         run: |
           python3 - <<'PY'
@@ -32,7 +34,9 @@ jobs:
           with zipfile.ZipFile('pixel-gallery-redirect.apk') as apk:
               assert any(p.startswith('res/') and 'ic_launcher' in p for p in apk.namelist())
           tools = pathlib.Path.home() / '.cache/pixel-gallery-android/tools/android-16'
-          print(subprocess.check_output([str(tools / 'aapt2'), 'dump', 'permissions', 'pixel-gallery-redirect.apk'], text=True))
+          permissions = subprocess.check_output([str(tools / 'aapt2'), 'dump', 'permissions', 'pixel-gallery-redirect.apk'], text=True)
+          assert 'uses-permission' not in permissions, 'Unexpected packaged permission'
+          print(permissions)
           PY
       - name: Set up Android command-line tools for emulator tests
         uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3

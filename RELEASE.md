@@ -8,9 +8,12 @@ certificate SHA-256 is:
 
 1. Run `python3 build.py`, then `python3 tests/run.py --device` on an unlocked
    test device. Review `VALIDATION.md` and record any remaining manual checks.
+   Run `python3 tests/reproducible.py` to compare independent unsigned builds.
 2. Run `python3 prepare-release.py`. This requires the retained key and verifies
    the APK certificate against the fingerprint above, manifest version,
    signature, ZIP alignment, permission declarations, and source artwork and packaged icon against v1.0.0.
+   It also checks the unsigned APK payload against the signed APK and stages
+   `UNSIGNED-SHA256SUMS` and `BUILD-INFO.json` for independent rebuild comparisons.
    It stages the APK, SHA256SUMS, SIGNING-CERTIFICATE.txt, and release notes under
    `build/release/v1.1.0/`. It does not publish or create a Git tag.
 3. Commit and push the reviewed source. Use that exact commit for the release:
@@ -21,7 +24,9 @@ certificate SHA-256 is:
      --notes-file build/release/v1.1.0/RELEASE-NOTES.md \
      build/release/v1.1.0/pixel-gallery-redirect.apk \
      build/release/v1.1.0/SHA256SUMS \
-     build/release/v1.1.0/SIGNING-CERTIFICATE.txt
+     build/release/v1.1.0/SIGNING-CERTIFICATE.txt \
+     build/release/v1.1.0/UNSIGNED-SHA256SUMS \
+     build/release/v1.1.0/BUILD-INFO.json
    ```
 
 4. Review the draft, source commit, validation limitations, and attached assets

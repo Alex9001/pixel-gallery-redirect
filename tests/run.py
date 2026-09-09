@@ -36,7 +36,7 @@ if '--device' in sys.argv:
     run('adb', 'install', '-r', ROOT / 'pixel-gallery-redirect.apk')
     run('adb', 'install', '-r', BUILD / 'tests.apk')
     try:
-        result = subprocess.check_output(['adb', 'shell', 'am', 'instrument', '-w', 'org.pixelgalleryredirect.tests/com.google.android.apps.photos.pager.GalleryTests'], text=True)
+        result = subprocess.check_output(['adb', 'shell', 'am', 'instrument', '-w', 'org.pixelgalleryredirect.tests/com.google.android.apps.photos.pager.GalleryTests'], text=True, timeout=180)
         print(result)
         if 'PASS:' not in result or 'FAIL' in result:
             raise SystemExit('Instrumentation tests failed')

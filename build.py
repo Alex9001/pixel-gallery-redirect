@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 """Build a tiny dependency-free APK using official Android SDK build tools."""
+import argparse
+import hashlib
+import json
 import os
+import platform
 from pathlib import Path
 import secrets
 import shutil
 import subprocess
 import zipfile
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--unsigned', action='store_true', help='Build reproducible unsigned APK without accessing signing keys')
+args = parser.parse_args()
 
 ROOT = Path(__file__).resolve().parent
 CACHE = Path.home() / '.cache/pixel-gallery-android'
@@ -25,8 +33,6 @@ for folder in (BUILD / 'classes', BUILD / 'dex', BUILD / 'res/mipmap-xxxhdpi'):
     if folder.exists():
         shutil.rmtree(folder)
     folder.mkdir(parents=True, exist_ok=True)
-KEYS.mkdir(parents=True, exist_ok=True)
-KEYS.chmod(0o700)
 env = dict(os.environ, JAVA_HOME=str(JAVA), PATH=str(JAVA / 'bin') + ':' + os.environ['PATH'])
 
 def run(*args):
@@ -34,7 +40,10 @@ def run(*args):
 
 password = KEYS / 'password'
 keystore = KEYS / 'redirect.jks'
-if not keystore.exists():
+if not args.unsigned:
+    KEYS.mkdir(parents=True, exist_ok=True)
+    KEYS.chmod(0o700)
+if not args.unsigned and not keystore.exists():
     password.write_text(secrets.token_urlsafe(32))
     password.chmod(0o600)
     run(JAVA / 'bin/keytool', '-genkeypair', '-keystore', keystore,
@@ -47,16 +56,41 @@ shutil.copyfile(ROOT / 'images/pixel-gallery-redirect-icon.png',
 run(TOOLS / 'aapt2', 'compile', '--dir', BUILD / 'res', '-o', BUILD / 'compiled-res.zip')
 run(TOOLS / 'aapt2', 'link', '-I', ANDROID, '--manifest', ROOT / 'AndroidManifest.xml',
     '-o', BUILD / 'resources.apk', BUILD / 'compiled-res.zip')
-run(JAVA / 'bin/javac', '--release', '8', '-classpath', ANDROID,
+run(JAVA / 'bin/javac', '--release', '8', '-encoding', 'UTF-8', '-classpath', ANDROID,
     '-d', BUILD / 'classes', *sorted((ROOT / 'src').rglob('*.java')))
 run(TOOLS / 'd8', '--release', '--min-api', '29', '--lib', ANDROID,
     '--output', BUILD / 'dex', *sorted((BUILD / 'classes').rglob('*.class')))
 with zipfile.ZipFile(BUILD / 'resources.apk') as source, \
-        zipfile.ZipFile(BUILD / 'unsigned.apk', 'w', zipfile.ZIP_DEFLATED) as target:
-    for item in source.infolist():
-        target.writestr(item, source.read(item.filename))
-    target.write(BUILD / 'dex/classes.dex', 'classes.dex')
+        zipfile.ZipFile(BUILD / 'unsigned.apk', 'w') as target:
+    entries = {name: source.read(name) for name in source.namelist()}
+    entries['classes.dex'] = (BUILD / 'dex/classes.dex').read_bytes()
+    for name, data in sorted(entries.items()):
+        # Canonical metadata, ordering and storage avoid wall-clock timestamps,
+        # filesystem permissions and zlib-version differences in APK bytes.
+        item = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+        item.create_system = 3
+        item.external_attr = 0o100644 << 16
+        item.compress_type = zipfile.ZIP_STORED
+        target.writestr(item, data)
 run(TOOLS / 'zipalign', '-f', '4', BUILD / 'unsigned.apk', BUILD / 'aligned.apk')
+unsigned = BUILD / 'pixel-gallery-redirect-unsigned.apk'
+shutil.copyfile(BUILD / 'aligned.apk', unsigned)
+digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+(BUILD / 'UNSIGNED-SHA256SUMS').write_text(digest(unsigned) + '  ' + unsigned.name + '\n')
+toolchain = {
+    'python': platform.python_version(),
+    'javac': subprocess.check_output([str(JAVA / 'bin/javac'), '-version'], env=env, text=True).strip(),
+    'sha256': {name: digest(path) for name, path in {
+        'android.jar': ANDROID, 'aapt2': TOOLS / 'aapt2',
+        'd8.jar': TOOLS / 'lib/d8.jar', 'zipalign': TOOLS / 'zipalign',
+    }.items()},
+    'unsignedApkSha256': digest(unsigned),
+}
+(BUILD / 'BUILD-INFO.json').write_text(json.dumps(toolchain, indent=2, sort_keys=True) + '\n')
+if args.unsigned:
+    run(TOOLS / 'zipalign', '-c', '4', unsigned)
+    print(unsigned)
+    raise SystemExit(0)
 run(TOOLS / 'apksigner', 'sign', '--ks', keystore, '--ks-key-alias', 'redirect',
     '--ks-pass', 'file:' + str(password),
     '--out', ROOT / 'pixel-gallery-redirect.apk', BUILD / 'aligned.apk')
