@@ -113,10 +113,15 @@ this app and future CYBER FRACTURE Android apps:
 https://alex9001.github.io/cyber-fracture-fdroid/fdroid/repo
 ```
 
-F-Droid will show the repository signing fingerprint before adding it. Compare it
-with the fingerprint published in the repository before trusting it. The repository
-is independently hosted rather than in F-Droid's main catalogue because this app
-uses the Google Photos package ID required by Pixel Camera.
+F-Droid will show the repository signing fingerprint before adding it. Trust it
+only if it is:
+
+```text
+B3:91:05:30:73:F0:F9:05:59:4C:91:4D:4A:63:C9:D1:CD:B6:73:F0:0D:DE:EE:A5:7C:F7:CF:98:48:0E:10:47
+```
+
+The repository is independently hosted rather than in F-Droid's main catalogue
+because this app uses the Google Photos package ID required by Pixel Camera.
 
 ## How it works
 
