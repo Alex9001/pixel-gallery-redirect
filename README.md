@@ -20,6 +20,7 @@
 <p align="center">
   <a href="https://github.com/Alex9001/pixel-gallery-redirect/releases/latest/download/pixel-gallery-redirect.apk"><strong>Download APK</strong></a> ·
   <a href="#install">Install</a> ·
+  <a href="#f-droid-updates">F-Droid updates</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#build-from-source">Build</a> ·
   <a href="https://github.com/Alex9001/pixel-gallery-redirect/issues">Issues</a>
@@ -54,6 +55,10 @@ that receives that request and sends it to the gallery you choose.
 - **Small and inspectable.** One Java activity, Android platform APIs, and zero third-party runtime libraries.
 
 ## Install
+
+**Want automatic update checks?** Add the [CYBER FRACTURE F-Droid repository](#f-droid-updates)
+to install the app and receive future updates through your F-Droid client.
+You can also download the APK directly:
 
 1. Download **[pixel-gallery-redirect.apk](https://github.com/Alex9001/pixel-gallery-redirect/releases/latest/download/pixel-gallery-redirect.apk)** from the latest release.
 2. Open the APK on your phone and allow installation from your browser or file manager if prompted.
@@ -106,16 +111,27 @@ sha256sum -c SHA256SUMS
 
 ## F-Droid updates
 
-Add the **CYBER FRACTURE** repository in the F-Droid client to receive
-this app and future CYBER FRACTURE Android apps:
+Add the **CYBER FRACTURE** repository once to get Pixel Gallery Redirect updates
+through your F-Droid client, without checking GitHub for each release. The same
+repository will also carry future CYBER FRACTURE Android apps.
+
+1. Open your F-Droid client's **Settings → Repositories → Add repository**.
+2. Paste the repository address below and compare its signing fingerprint with the one listed here.
+3. Add the repository, refresh it, and search for **Pixel Gallery Redirect** to install or update it.
+4. Enable periodic update checks and update notifications in your client. If your client and Android setup support automatic installation, enable that too; otherwise, approve updates when prompted.
 
 ```text
 https://alex9001.github.io/cyber-fracture-fdroid/fdroid/repo
 ```
 
-The [add-repository page](https://alex9001.github.io/cyber-fracture-fdroid/)
-has a scannable QR code and a copy button that includes the fingerprint. Refresh
-your repositories after adding it to load the **CYBER FRACTURE** display name.
+The [repository setup page](https://alex9001.github.io/cyber-fracture-fdroid/)
+also has a copy button that includes the fingerprint. Refresh your repositories
+after adding it to load the **CYBER FRACTURE** display name.
+
+Already installed an official APK from GitHub Releases? You can keep it installed:
+the repository distributes APKs signed with the same release key, so future
+versions can update it in place. Self-built APKs signed with a different key
+cannot receive these updates in place.
 
 F-Droid will show the repository signing fingerprint before adding it. Trust it
 only if it is:
