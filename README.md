@@ -23,6 +23,7 @@
   <a href="#f-droid-updates">F-Droid updates</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#build-from-source">Build</a> ·
+  <a href="https://deepwiki.com/Alex9001/pixel-gallery-redirect">DeepWiki</a> ·
   <a href="https://github.com/Alex9001/pixel-gallery-redirect/issues">Issues</a>
 </p>
 
