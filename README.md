@@ -15,6 +15,7 @@
   <a href="https://github.com/Alex9001/pixel-gallery-redirect/releases"><img src="https://img.shields.io/github/downloads/Alex9001/pixel-gallery-redirect/total?style=flat&amp;color=209bff" alt="Release downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-ISC-6366f1?style=flat" alt="ISC license"></a>
   <a href="#compatibility"><img src="https://img.shields.io/badge/Android-10%2B-34a853?style=flat" alt="Requires Android 10 or later"></a>
+  <a href="https://deepwiki.com/Alex9001/pixel-gallery-redirect"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 </p>
 
 <p align="center">
@@ -23,7 +24,6 @@
   <a href="#f-droid-updates">F-Droid updates</a> ·
   <a href="#how-it-works">How it works</a> ·
   <a href="#build-from-source">Build</a> ·
-  <a href="https://deepwiki.com/Alex9001/pixel-gallery-redirect">DeepWiki</a> ·
   <a href="https://github.com/Alex9001/pixel-gallery-redirect/issues">Issues</a>
 </p>
 
