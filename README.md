@@ -159,15 +159,21 @@ because this app uses the Google Photos package ID required by Pixel Camera.
 
 ## Permissions and access
 
-**Declared Android permissions: none.** The app does not request runtime permissions.
+**You do not need to approve a permission prompt to use the redirect.** Here is
+the access it uses and the permission control you may see on GrapheneOS:
 
-| Access | What the app uses |
-|---|---|
-| Camera, microphone, location, contacts | No permissions requested |
-| Internet | No `INTERNET` permission; updates are handled by F-Droid or Obtainium |
-| Photo library and storage | No storage or `READ_MEDIA_*` permissions |
-| Preview media | Temporary read access to the URI supplied by Camera, forwarded to the selected viewer with `FLAG_GRANT_READ_URI_PERMISSION` |
-| Installed viewers | Scoped package-visibility queries for image/video viewing intents; no `QUERY_ALL_PACKAGES` permission |
+| Access or setting | Why it appears / what it does | What you need to allow |
+|---|---|---|
+| **Sensors** in GrapheneOS app settings | GrapheneOS adds this permission and enables it by default for compatibility, unless you changed that default. The redirect does not call sensor APIs. | You can turn Sensors off for the redirect; sensor access is not required for gallery selection or forwarding. |
+| **Temporary access to the preview photo/video** | Camera supplies a content URI with temporary read access. The redirect passes that access to your selected viewer. | No separate permission prompt from the redirect. This is access to the supplied media, not your whole library. |
+| **Discovery of installed viewers** | Scoped queries find apps that handle photo/video viewing, so the picker can list them. | No permission prompt. |
+
+The Sensors setting is added by GrapheneOS even though the APK declares no
+`uses-permission` entries. Seeing it enabled does not mean the app requested or
+used sensors. See [GrapheneOS's Sensors permission documentation](https://grapheneos.org/features#sensors-permission-toggle).
+
+Your chosen gallery and your update client have their own permissions, managed
+separately from the redirect.
 
 The gallery preference is stored in private app storage. Media URIs are not saved
 there. CI checks both the source manifest and packaged APK for declared permissions.
