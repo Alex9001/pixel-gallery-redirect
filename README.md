@@ -15,11 +15,9 @@
   <a href="https://github.com/Alex9001/pixel-gallery-redirect/releases"><img src="https://img.shields.io/github/downloads/Alex9001/pixel-gallery-redirect/total?style=flat&amp;color=209bff" alt="Release downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-ISC-6366f1?style=flat" alt="ISC license"></a>
   <a href="#compatibility"><img src="https://img.shields.io/badge/Android-10%2B-34a853?style=flat" alt="Requires Android 10 or later"></a>
-  <a href="https://deepwiki.com/Alex9001/pixel-gallery-redirect"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Alex9001/pixel-gallery-redirect/releases/latest/download/pixel-gallery-redirect.apk"><strong>Download APK</strong></a> ·
   <a href="#install">Install</a> ·
   <a href="#f-droid-updates">F-Droid updates</a> ·
   <a href="#how-it-works">How it works</a> ·
@@ -27,11 +25,14 @@
   <a href="https://github.com/Alex9001/pixel-gallery-redirect/issues">Issues</a>
 </p>
 
----
-
 <p align="center">
-  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.google.android.apps.photos%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FAlex9001%2Fpixel-gallery-redirect%22%2C%22author%22%3A%22Alex9001%22%2C%22name%22%3A%22Pixel%20Gallery%20Redirect%22%7D"><img src="https://img.shields.io/badge/Add%20to-Obtainium-1f6feb?style=for-the-badge" alt="Add to Obtainium"></a>
+  <a href="https://github.com/Alex9001/pixel-gallery-redirect/releases/latest/download/pixel-gallery-redirect.apk"><img src="https://img.shields.io/badge/Download-APK-1f6feb?style=flat" height="20" alt="Download APK"></a>
+  <a href="#f-droid-updates"><img src="https://img.shields.io/badge/Add%20to-F--Droid-1f6feb?style=flat" height="20" alt="Add to F-Droid"></a>
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.google.android.apps.photos%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FAlex9001%2Fpixel-gallery-redirect%22%2C%22author%22%3A%22Alex9001%22%2C%22name%22%3A%22Pixel%20Gallery%20Redirect%22%7D"><img src="https://img.shields.io/badge/Add%20to-Obtainium-1f6feb?style=flat" height="20" alt="Add to Obtainium"></a>
+  <a href="https://deepwiki.com/Alex9001/pixel-gallery-redirect"><img src="https://deepwiki.com/badge.svg" height="20" alt="Ask DeepWiki"></a>
 </p>
+
+---
 
 Track official GitHub releases with Obtainium using the button above. Review and
 confirm the app configuration in Obtainium. You can also paste
